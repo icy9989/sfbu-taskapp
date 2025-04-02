@@ -1,5 +1,4 @@
 import { compare } from "bcrypt";
-import { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
