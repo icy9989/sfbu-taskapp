@@ -64,23 +64,3 @@ export async function POST(req) {
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
-
-export async function GET() { 
-    try {
-      
-        const { currentUser } = await serverAuth();
- 
-        const user = await prismadb.user.findUnique({
-            where: {
-                id: currentUser.id
-            }
-        })
-
-        return NextResponse.json(user);
-        
-    } catch(error) {
-        console.log("[USER_GET]", error);
-        return new NextResponse("Internal Server Error", { status: 500 })
-    }
-}
-
