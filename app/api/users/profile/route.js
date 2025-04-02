@@ -7,6 +7,9 @@ import serverAuth from "@/lib/server-auth";
 export async function GET() {
     try {
       const { currentUser } = await serverAuth();  // Authentication middleware
+      if (!currentUser) {
+        return new NextResponse("Unauthorized", { status: 401 });
+      }
   
       // Fetch the current user's details from the database
       const user = await prismadb.user.findUnique({
