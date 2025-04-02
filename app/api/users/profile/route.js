@@ -26,8 +26,7 @@ export async function GET() {
           notifications: true,
           dashboardStats: true
         },
-        // Enable logging to see SQL queries and errors
-  log: ['query', 'info', 'warn', 'error'],
+    
       });
   
       return NextResponse.json(user);
