@@ -2,7 +2,58 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 import prismadb from '@/lib/prismadb';
-import serverAuth from "@/lib/server-auth";
+
+/**
+ * @swagger
+ * /api/register:
+ *   post:
+ *     description: Registers a new user with a name, email, and password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Full name of the user.
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 description: Email address of the user.
+ *                 example: john.doe@example.com
+ *               password:
+ *                 type: string
+ *                 description: Password for the user account.
+ *                 example: password123
+ *     responses:
+ *       200:
+ *         description: Successfully registered the user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: The unique identifier for the user.
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   description: The full name of the user.
+ *                   example: John Doe
+ *                 email:
+ *                   type: string
+ *                   description: The email address of the user.
+ *                   example: john.doe@example.com
+ *       400:
+ *         description: Bad request if any of the required fields are missing.
+ *       422:
+ *         description: Conflict if the email already exists.
+ *       500:
+ *         description: Internal server error.
+ */
 
 export async function POST(req) { 
     try {
