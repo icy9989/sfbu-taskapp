@@ -2,21 +2,14 @@
  * @swagger
  * /api/hello:
  *   get:
- *     summary: Returns a hello world message.
- *     description: This endpoint returns a simple hello world message to test the API.
+ *     description: Returns the hello world
  *     responses:
  *       200:
- *         description: A hello world message
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Hello World
+ *         description: Hello World!
  */
-export async function GET(req, res) {
-    return res.json({ message: "Hello World" });
-  }
-  
+export async function GET(_request) {
+  // Do whatever you want
+  return new Response('Hello World!', {
+    status: 200,
+  });
+}

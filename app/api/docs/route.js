@@ -1,24 +1,15 @@
-import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+import { swaggerSpec, swaggerUi } from '@/lib/swagger';
+import { NextResponse } from 'next/server';
 
-// Define Swagger options
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0", // OpenAPI version
-    info: {
-      title: "My Next.js API", // API Title
-      version: "1.0.0", // API Version
-      description: "This is the API documentation for my Next.js project.", // API Description
-    },
-  },
-  apis: ["./app/api/**/*.js"], // Path to the API files you want to document
-};
+export async function GET(req) {
+  // Serve the Swagger JSON specification for Swagger UI
+  if (req.url.includes('/swagger.json')) {
+    return NextResponse.json(swaggerSpec);
+  }
 
-// Generate the Swagger specification
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
-
-export async function GET(req, res) {
-  // Serve the Swagger UI
-  return swaggerUi.setup(swaggerSpec)(req, res);
+  // Otherwise, return the Swagger UI HTML
+  const html = swaggerUi.generateHTML(swaggerSpec);
+  return new NextResponse(html, {
+    headers: { 'Content-Type': 'text/html' }, // Set content type for Swagger UI
+  });
 }
-
