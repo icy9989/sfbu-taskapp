@@ -7,7 +7,8 @@ import prismadb from '@/lib/prismadb';
  * @swagger
  * /api/register:
  *   post:
- *     description: Registers a new user with a name, email, and password.
+ *     tags: [Authentication]
+ *     description: Registers a new user with a name, email, and password. If the email already exists, it returns a conflict error.
  *     requestBody:
  *       required: true
  *       content:
@@ -18,41 +19,65 @@ import prismadb from '@/lib/prismadb';
  *               name:
  *                 type: string
  *                 description: Full name of the user.
- *                 example: John Doe
+ *                 example: "Vicky"
  *               email:
  *                 type: string
  *                 description: Email address of the user.
- *                 example: john.doe@example.com
+ *                 example: "kmhtwe1999@gmail.com"
  *               password:
  *                 type: string
  *                 description: Password for the user account.
- *                 example: password123
+ *                 example: "Kmh3151999?"
  *     responses:
  *       200:
- *         description: Successfully registered the user.
+ *         description: Successfully registered the user and created the associated dashboard stats.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 id:
- *                   type: integer
+ *                   type: string
  *                   description: The unique identifier for the user.
- *                   example: 1
+ *                   example: "67e797df47c9baab43d94182"
  *                 name:
  *                   type: string
  *                   description: The full name of the user.
- *                   example: John Doe
+ *                   example: "Vicky"
  *                 email:
  *                   type: string
  *                   description: The email address of the user.
- *                   example: john.doe@example.com
+ *                   example: "kmhtwe1999@gmail.com"
  *       400:
- *         description: Bad request if any of the required fields are missing.
+ *         description: Bad request if any of the required fields are missing or if input validation fails.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Name is required"
  *       422:
  *         description: Conflict if the email already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Email already exists!"
  *       500:
- *         description: Internal server error.
+ *         description: Internal server error if there's an issue with the registration.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
  */
 
 export async function POST(req) { 

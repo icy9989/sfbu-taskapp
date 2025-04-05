@@ -30,7 +30,7 @@ model Team {
   name        String
   description String?
   adminId     String   @db.ObjectId
-  admin       User     @relation("CreatedTeams", fields: [adminId], references: [id])
+  admin       User     @relation("CreatedTeams", fields: [adminId], references: [id], onDelete: Cascade)
   members     TeamMembers[]
   projects    Project[]
   tasks       Task[]   // The relation to tasks (opposite of Task.team)
@@ -40,9 +40,9 @@ model Team {
 model TeamMembers {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   teamId   String @db.ObjectId
-  team     Team   @relation(fields: [teamId], references: [id])
+  team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade) // Cascade delete here
   userId   String @db.ObjectId
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete here
   role     TeamRole  // "ADMIN" | "MEMBER"
   joinedAt DateTime @default(now())
 }
@@ -65,22 +65,20 @@ model Task {
   progress    Int       @default(0)  // 0 to 100%
   isRecurring Boolean   @default(false)
   creatorId   String   @db.ObjectId
-  creator     User     @relation("UserCreatedTasks", fields: [creatorId], references: [id])
-  
+  creator     User     @relation("UserCreatedTasks", fields: [creatorId], references: [id], onDelete: Cascade) // Cascading delete
   // Optional fields to make the task either individual or team-based
   teamId      String?  @db.ObjectId   // Optional, task can be individual
   team        Team?    @relation(fields: [teamId], references: [id])
-  
   projectId   String?  @db.ObjectId   // Optional, task can be outside any project
   project     Project? @relation(fields: [projectId], references: [id])
 
   // Relation to other models
-  assignedTasks AssignmentTasks[]
-  subtasks    SubTask[]
-  comments    Comment[]
+  assignedTasks AssignmentTasks[] 
+  subtasks      SubTask[] 
+  comments      Comment[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 enum Priority {
@@ -93,7 +91,7 @@ enum Priority {
 model AssignmentTasks {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   taskId      String   @db.ObjectId
-  task        Task     @relation(fields: [taskId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade) // Cascade delete
   assignedBy  String   @db.ObjectId
   assignedTo  String   @db.ObjectId
   assignedToUser User  @relation(fields: [assignedTo], references: [id])
@@ -126,7 +124,7 @@ model Project {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   teamId    String   @db.ObjectId
-  team      Team     @relation(fields: [teamId], references: [id])
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)  // Cascade delete
   tasks     Task[]   // The relation to tasks (opposite of Task.project)
   createdAt DateTime @default(now())
 }
@@ -143,12 +141,13 @@ model SubTask {
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   taskId    String   @db.ObjectId
-  task      Task     @relation(fields: [taskId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade) // Cascade delete
   userId    String   @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for user
   comment   String
   timestamp DateTime @default(now())
 }
+
 
 model Recommendation {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
