@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prismadb from '@/lib/prismadb';
 import serverAuth from "@/lib/server-auth";
 
@@ -188,10 +188,6 @@ import serverAuth from "@/lib/server-auth";
  *       500:
  *         description: Internal server error.
  */
-
-import { NextRequest, NextResponse } from "next/server";
-import prismadb from '@/lib/prismadb';
-import serverAuth from "@/lib/server-auth";
 
 // Get a specific task by ID
 export async function GET(req, { params }) {
