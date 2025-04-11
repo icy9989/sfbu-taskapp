@@ -184,7 +184,6 @@ import serverAuth from "@/lib/server-auth";
  *         description: The unique identifier of the team to be deleted.
  *         schema:
  *           type: string
- *           example: "abc123"
  *     responses:
  *       200:
  *         description: Successfully deleted the team.

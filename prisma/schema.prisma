@@ -58,7 +58,7 @@ model Task {
   description String?
   startDate   DateTime
   dueDate     DateTime
-  priority    Priority
+  priority    String
   category    String
   tags        String[]   // Custom categorization
   status      String

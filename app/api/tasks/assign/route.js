@@ -2,6 +2,89 @@ import { NextResponse } from "next/server";
 import prismadb from '@/lib/prismadb';
 import serverAuth from "@/lib/server-auth";
 
+/**
+ * @swagger
+ * /api/tasks/assign:
+ *   post:
+ *     tags: [Tasks]
+ *     summary: Assign a task to a user
+ *     description: Assigns a specific task to another user. The authenticated user is considered the assigner.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - taskId
+ *               - assignedToId
+ *             properties:
+ *               taskId:
+ *                 type: string
+ *                 description: ID of the task to assign
+ *                 example: "6615abc123ef45678901a234"
+ *               assignedToId:
+ *                 type: string
+ *                 description: ID of the user to whom the task is being assigned
+ *                 example: "6609def456bc78901234b567"
+ *     responses:
+ *       200:
+ *         description: Task assigned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: ID of the assignment
+ *                 assignedBy:
+ *                   type: string
+ *                   description: ID of the assigner (current user)
+ *                 assignedToUser:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: "Jane Doe"
+ *                 task:
+ *                   type: object
+ *                   properties:
+ *                     title:
+ *                       type: string
+ *                       example: "Update website layout"
+ *       400:
+ *         description: Missing task ID or assigned user ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Task ID and Assigned User ID are required"
+ *       401:
+ *         description: User is not authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthenticated"
+ *       500:
+ *         description: Internal server error occurred
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+
 // Create an assignment for a task
 export async function POST(req) {
   try {

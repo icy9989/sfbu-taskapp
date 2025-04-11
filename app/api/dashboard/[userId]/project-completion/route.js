@@ -106,6 +106,8 @@ export async function GET(req, { params }) {
             };
         });
 
+        console.log(projects)
+
         return NextResponse.json(projectData);
     } catch (error) {
         console.error("[FETCH_PROJECT_COMPLETION]", error);

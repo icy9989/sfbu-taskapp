@@ -3,7 +3,7 @@ import prismadb from "@/lib/prismadb";
 
 /**
  * @swagger
- * /api/tasks/comment:
+ * /api/tasks/comments:
  *   post:
  *     tags: [Tasks]
  *     description: Adds a comment to a specific task.

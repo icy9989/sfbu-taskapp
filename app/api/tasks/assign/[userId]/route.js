@@ -3,21 +3,22 @@ import prismadb from '@/lib/prismadb';
 
 /**
  * @swagger
- * /api/tasks/{taskId}/comments:
+ * /api/tasks/assign/{userId}:
  *   get:
  *     tags: [Tasks]
- *     description: Retrieves all comments for a specific task, ordered by timestamp.
+ *     summary: Get all tasks assigned to a specific user
+ *     description: Retrieves all tasks that have been assigned to a specific user, including information about the assignment and assigner.
  *     parameters:
- *       - name: taskId
+ *       - name: userId
  *         in: path
  *         required: true
- *         description: The unique identifier of the task whose comments are to be fetched.
+ *         description: The unique identifier of the user to whom tasks are assigned
  *         schema:
  *           type: string
- *           example: "task123"
+ *           example: "6609def456bc78901234b567"
  *     responses:
  *       200:
- *         description: Successfully retrieved comments for the task.
+ *         description: List of assigned tasks retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -27,33 +28,48 @@ import prismadb from '@/lib/prismadb';
  *                 properties:
  *                   id:
  *                     type: string
- *                     description: The unique identifier of the comment.
- *                     example: "comment789"
- *                   userId:
+ *                     description: Task ID
+ *                     example: "6615abc123ef45678901a234"
+ *                   title:
  *                     type: string
- *                     description: The ID of the user who made the comment.
- *                     example: "user456"
- *                   comment:
+ *                     description: Task title
+ *                     example: "Write documentation"
+ *                   category:
  *                     type: string
- *                     description: The content of the comment.
- *                     example: "This task needs more clarification."
- *                   timestamp:
+ *                     description: Task category
+ *                     example: "Documentation"
+ *                   startDate:
  *                     type: string
- *                     description: The time when the comment was made.
- *                     example: "2024-04-05T08:30:00Z"
- *                   user:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: The ID of the user.
- *                         example: "user456"
- *                       name:
- *                         type: string
- *                         description: The name of the user.
- *                         example: "John Doe"
+ *                     format: date-time
+ *                     example: "2025-04-07T09:00:00.000Z"
+ *                   dueDate:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2025-04-10T17:00:00.000Z"
+ *                   assignedTasks:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         assignedBy:
+ *                           type: string
+ *                           description: User ID of the assigner
+ *                         assignedTo:
+ *                           type: string
+ *                           description: User ID of the assignee
+ *                         createdAt:
+ *                           type: string
+ *                           format: date-time
+ *                           description: When the task was assigned
+ *                         assignedToUser:
+ *                           type: object
+ *                           properties:
+ *                             name:
+ *                               type: string
+ *                               description: Name of the assigned user
+ *                               example: "Jane Doe"
  *       400:
- *         description: Invalid task ID supplied.
+ *         description: User ID is missing in the path
  *         content:
  *           application/json:
  *             schema:
@@ -61,9 +77,9 @@ import prismadb from '@/lib/prismadb';
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "Invalid task ID"
+ *                   example: "User ID is required"
  *       500:
- *         description: Failed to fetch comments for the task.
+ *         description: Internal Server Error
  *         content:
  *           application/json:
  *             schema:
@@ -73,7 +89,6 @@ import prismadb from '@/lib/prismadb';
  *                   type: string
  *                   example: "Internal Server Error"
  */
-
 
 // Get all tasks assigned to a User
 export async function GET(req, { params }) {
