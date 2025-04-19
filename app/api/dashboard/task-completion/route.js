@@ -21,9 +21,6 @@ import serverAuth from "@/lib/server-auth";
  *             schema:
  *               type: object
  *               properties:
- *                 userId:
- *                   type: string
- *                   example: "6429dfc1e71a..."
  *                 totalTasks:
  *                   type: integer
  *                   description: Total number of tasks relevant to the user
@@ -104,12 +101,13 @@ export async function GET() {
       ? (completedTasks.length / allTasks.length) * 100
       : 0;
 
-    return NextResponse.json({
-      userId: currentUser.id,
-      totalTasks: allTasks.length,
-      completedTasks: completedTasks.length,
-      completionRate: parseFloat(completionRate.toFixed(2)),
-    });
+    const response = [
+        { title: "Total Tasks", value: allTasks.length },
+        { title: "Completed Tasks", value: completedTasks.length },
+        { title: "Completion Rate", value: parseFloat(completionRate.toFixed(2)) }
+      ];
+
+      return NextResponse.json(response);
   } catch (error) {
     console.error("[FETCH_TASK_COMPLETION]", error);
     return NextResponse.json(
