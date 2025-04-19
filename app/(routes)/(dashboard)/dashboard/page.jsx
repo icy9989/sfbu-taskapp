@@ -1,12 +1,12 @@
 "use client";
 
-const DashboardPage = () => {
-  
-    return (
-    <div className="h-full p-5 bg-slate-50/10">
-        testing
-    </div>
-  )
-}
+const Dashboard = ({ children }) => {
 
-export default DashboardPage
+    return (
+      <div className="h-full">
+        Testing
+      </div>
+    )
+}
+  
+export default Dashboard

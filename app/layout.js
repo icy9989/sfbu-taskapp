@@ -7,8 +7,8 @@ import { ToastProvider } from '@/providers/toast-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'မေမြန်မာ',
-  description: 'May Myanmar Admin Application',
+  title: 'Task App',
+  description: 'Task Managment app',
 }
 
 export default function RootLayout({
