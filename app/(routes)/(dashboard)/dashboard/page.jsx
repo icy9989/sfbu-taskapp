@@ -4,8 +4,10 @@ import Header from "@/components/header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton";
 import useTaskCompletionDashboardCard from "@/hooks/use-taskcompletion-dashboard";
+import useTopCategoryChart from "@/hooks/use-topcategory-chart";
 import { LayoutDashboard } from "lucide-react";
 import DashboardCard from "./components/dashboard-card";
+import TopCategory from "./components/top-category";
 
 const cards = [
   {
@@ -42,6 +44,7 @@ const cards = [
 const Dashboard = ({ children }) => {
 
   const { data: cardData, isLoading: cardLoading } = useTaskCompletionDashboardCard();
+  const { data: topCategoryData, isLoading: topCategoryLoading }= useTopCategoryChart(); 
 
     return (
       <div className="h-full p-5 bg-slate-50/10">
@@ -82,6 +85,15 @@ const Dashboard = ({ children }) => {
   )
 }
       </div>  
+
+      {topCategoryLoading ? 
+              (
+              <div className="flex flex-col ml-4">
+                <Skeleton className="h-[350px] w-full rounded-xl" />
+              </div>
+              ) :    
+              <TopCategory data={topCategoryData} />
+            }
       </div>
     )
 }

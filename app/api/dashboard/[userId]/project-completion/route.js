@@ -113,4 +113,4 @@ export async function GET(req, { params }) {
         console.error("[FETCH_PROJECT_COMPLETION]", error);
         return new NextResponse("Failed to fetch project data", { status: 500 });
     }
-}
+}  
