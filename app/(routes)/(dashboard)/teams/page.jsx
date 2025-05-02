@@ -6,37 +6,37 @@ import MobileAddButton from "@/components/mobile-add-button";
 
 import prismadb from "@/lib/prismadb";;
 
-import Tasks from "./components/tasks";
+import Teams from "./components/teams";
 
-const TasksPage = async () => {
+const TeamsPage = async () => {
 
-  const taskCount = await prismadb.task.count(); 
+  const teamCount = await prismadb.team.count(); 
 
   return (
     <div className="h-full p-5">
       <div className="flex justify-between items-center border-b">
         <Header
-          title="Create Task"
-          description="Here you can create a new task"
+          title="Create Team"
+          description="Here you can create a new team"
           icon={ClipboardList}
-          count={taskCount} 
+          count={teamCount} 
           color="text-primary"
           bgColor="bg-primary/10"
         />
         <div className="hidden sm:flex">
-          <AddButton href="/tasks/new" />
+          <AddButton href="/teams/new" />
         </div>
       </div>
 
       <div className="my-5 pb-24">
-        <Tasks />
+        <Teams />
       </div>
 
       <div className="sm:hidden mt-10 fixed bottom-5 right-5">
-        <MobileAddButton href="/tasks/new" />
+        <MobileAddButton href="/teams/new" />
       </div>
     </div>
   );
 };
 
-export default TasksPage;
+export default TeamsPage;

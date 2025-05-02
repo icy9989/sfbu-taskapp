@@ -7,6 +7,9 @@ import * as z from "zod"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { format } from "date-fns"
+import { useParams } from "next/navigation";
+
+import { useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -32,6 +35,8 @@ const formSchema = z.object({
 const TaskForm = ({ initialData = null }) => {
   const [loading, setLoading] = useState(false)
   const { mutate: mutateTasks } = useTasks();
+  const router = useRouter()
+  const params = useParams()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -50,11 +55,11 @@ const TaskForm = ({ initialData = null }) => {
     setLoading(true)
     try {
       if (initialData) {
-        await axios.put(`/api/tasks/${initialData.id}`, data)
+        await axios.put(`/api/tasks/${initialData.id}`, { ...data, teamId: params.teamId })
         toast.success("Task updated successfully.")
         mutateTasks()
       } else {
-        await axios.post("/api/tasks", data)
+        await axios.post("/api/tasks",  { ...data, teamId: params.teamId })
         toast.success("Task created successfully.")
         mutateTasks()
       }

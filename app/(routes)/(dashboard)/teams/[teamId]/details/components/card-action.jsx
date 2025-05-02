@@ -8,19 +8,19 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import DeleteAlertModal from "@/components/modals/delete-alert-modal"
 
-import useTeams from "@/hooks/use-teams"
+import useTasks from "@/hooks/use-tasks"
 
 const CardAction = ({ id }) => {
 
     const router = useRouter();
     const [ openDeleteAlert, setOpenDeleteAlert ] = useState(false);
-    const { mutate: mutateTeams} = useTeams();
+    const { mutate: mutateTasks} = useTasks();
 
     const onDelete = async () => {
         try {
-            await axios.delete(`/api/teams/${id}`);
-            toast.success("Team is successfully deleted.");
-            mutateTeams();
+            await axios.delete(`/api/tasks/${id}`);
+            toast.success("Task is successfully deleted.");
+            mutateTasks();
         } catch(error) {
             console.log(error);
             toast.error("Something went wrong.");
@@ -42,7 +42,7 @@ const CardAction = ({ id }) => {
                 <DropdownMenuLabel>
                     Actions
                 </DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => router.push(`/teams/${id}`)}>
+                <DropdownMenuItem onClick={() => router.push(`/tasks/${id}`)}>
                     <Edit className="w-4 h-4 mr-2" />
                     Update
                 </DropdownMenuItem>
