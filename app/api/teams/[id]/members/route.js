@@ -59,7 +59,51 @@ import serverAuth from "@/lib/server-auth";
  *         description: User or team not found.
  *       500:
  *         description: Internal server error.
+ *  * /api/teams/{id}/members:
+ *   get:
+ *     tags: [Teams]
+ *     description: Fetches all members of a team along with their roles. Only the admin can view team members.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the team.
+ *         schema:
+ *           type: string
+ *           example: "abc123"
+ *     responses:
+ *       200:
+ *         description: Successfully fetched team members with their roles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   teamId:
+ *                     type: string
+ *                   userId:
+ *                     type: string
+ *                   username:
+ *                     type: string
+ *                   role:
+ *                     type: string
+ *                   position:
+ *                     type: string
+ *       401:
+ *         description: Unauthorized - user is not authenticated.
+ *       403:
+ *         description: Forbidden - only the admin can view members.
+ *       404:
+ *         description: Team not found.
+ *       500:
+ *         description: Internal server error.
  */
+
+
 export async function POST(req, { params }) {
   try {
     const { username, role } = await req.json();
@@ -100,6 +144,53 @@ export async function POST(req, { params }) {
     return NextResponse.json(addedMember);
   } catch (error) {
     console.error("[ADD_TEAM_MEMBER]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
+export async function GET(req, { params }) {
+  try {
+    const { currentUser } = await serverAuth();
+
+    if (!currentUser) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    const team = await prismadb.team.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!team) {
+      return new NextResponse("Team not found", { status: 404 });
+    }
+
+    if (team.adminId !== currentUser.id) {
+      return new NextResponse("Forbidden: Only the admin can view members", { status: 403 });
+    }
+
+    const teamMembers = await prismadb.teamMembers.findMany({
+      where: { teamId: params.id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    const formattedMembers = teamMembers.map((member) => ({
+      id: member.id,
+      teamId: member.teamId,
+      userId: member.userId,
+      username: member.user.username,
+      role: member.role,
+    }));
+
+    return NextResponse.json(formattedMembers);
+  } catch (error) {
+    console.error("[GET_TEAM_MEMBERS]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

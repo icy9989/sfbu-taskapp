@@ -22,7 +22,7 @@ const TeamCard = ({ team }) => {
       >
         <CardAction id={team.id} />
       </div>
-      <CardHeader className="flex flex-col items-center text-center sm:h-36">
+      <CardHeader className="flex flex-col items-center justify-center text-center sm:h-36">
         <CardTitle className="text-lg font-semibold">{team.name}</CardTitle>
       </CardHeader>
     </Card>
