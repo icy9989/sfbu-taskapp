@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import useTasks from "@/hooks/use-tasks"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -32,6 +33,8 @@ const formSchema = z.object({
 const TaskForm = ({ initialData = null }) => {
   const [loading, setLoading] = useState(false)
   const { mutate: mutateTasks } = useTasks();
+
+  const router = useRouter()
 
   const form = useForm({
     resolver: zodResolver(formSchema),

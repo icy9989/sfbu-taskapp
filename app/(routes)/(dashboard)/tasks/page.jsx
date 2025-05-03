@@ -19,7 +19,7 @@ const TasksPage = async () => {
           title="Create Task"
           description="Here you can create a new task"
           icon={ClipboardList}
-          count={taskCount} 
+          count={taskCount ? taskCount : "0"} 
           color="text-primary"
           bgColor="bg-primary/10"
         />

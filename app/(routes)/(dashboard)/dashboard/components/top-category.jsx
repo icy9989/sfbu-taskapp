@@ -4,7 +4,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 const TopCategory = ({ data }) => {
   // Format data to match BarChart expectations
-  const chartData = data.map(item => ({
+  const chartData = data?.map(item => ({
     name: item.category,
     value: item.taskCount,
   }));

@@ -30,7 +30,7 @@ const EditTask = () => {
         task = null;
     }
 
-    console.log(task)
+    console.log(task, "tt")
 
 
     if(isLoading) {

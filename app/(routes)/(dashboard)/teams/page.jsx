@@ -1,4 +1,4 @@
-import { ClipboardList } from "lucide-react";
+import { Users } from "lucide-react";
 
 import Header from "@/components/header";
 import AddButton from "@/components/add-button";
@@ -18,8 +18,8 @@ const TeamsPage = async () => {
         <Header
           title="Create Team"
           description="Here you can create a new team"
-          icon={ClipboardList}
-          count={teamCount} 
+          icon={Users}
+          count={teamCount ? teamCount : "0"} 
           color="text-primary"
           bgColor="bg-primary/10"
         />
