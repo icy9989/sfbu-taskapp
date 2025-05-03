@@ -20,6 +20,10 @@ import prismadb from '@/lib/prismadb';
  *                 type: string
  *                 description: Full name of the user.
  *                 example: "Vicky"
+ *              username:
+ *                 type: string
+ *                 description: username of the user.
+ *                 example: "Vicky123"
  *               email:
  *                 type: string
  *                 description: Email address of the user.
@@ -44,6 +48,10 @@ import prismadb from '@/lib/prismadb';
  *                   type: string
  *                   description: The full name of the user.
  *                   example: "Vicky"
+ *                 username:
+ *                   type: string
+ *                   description: The username of the user.
+ *                   example: "Vicky123"
  *                 email:
  *                   type: string
  *                   description: The email address of the user.
@@ -82,11 +90,15 @@ import prismadb from '@/lib/prismadb';
 
 export async function POST(req) { 
     try {
-        const { name, email, password } = await req.json();   
+        const { name, email, username, password } = await req.json();   
         
         // Validate input fields
         if (!name) {
             return new NextResponse("Name is required", { status: 400 });
+        }
+
+        if (!username) {
+            return new NextResponse("Usermame is required", { status: 400 });
         }
 
         if (!email) {
@@ -116,6 +128,7 @@ export async function POST(req) {
             data: {
                 name,
                 email,
+                username,
                 hashedPassword
             }
         });

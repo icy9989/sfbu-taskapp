@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import CardAction from './card-action'
 
-const TaskCard = ({ task, teamId }) => {
+const TaskCard = ({ task }) => {
 
   const getStatusStyle = () => {
     switch (task.status) {
@@ -23,7 +23,7 @@ const TaskCard = ({ task, teamId }) => {
     <>
       <Card className="border-0 bg-slate-50 relative shadow-md">
         <div className='absolute right-3 top-3'>
-          <CardAction id={task.id} teamId={teamId} />
+          <CardAction id={task.id} />
         </div> 
         <CardHeader className="flex flex-col items-center text-center sm:h-36">
           <CardTitle className="text-lg font-semibold">{task.title}</CardTitle>

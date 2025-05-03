@@ -2,14 +2,13 @@ import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 import serverAuth from "@/lib/server-auth";
 
-
 /**
  * @swagger
  * /api/teams/{teamId}/tasks:
  *   get:
  *     tags: [Teams]
  *     summary: Get tasks for a specific team
- *     description: Retrieves all tasks assigned to or created within the specified team.
+ *     description: Retrieves all tasks created under the specified team, only if the user is a member.
  *     parameters:
  *       - in: path
  *         name: teamId
@@ -77,8 +76,11 @@ export async function GET(req, { params }) {
     const { teamId } = params;
 
     const { currentUser } = await serverAuth();
-    if (!currentUser) return new NextResponse("Unauthenticated", { status: 401 });
+    if (!currentUser) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
 
+    // Ensure user is a member of the team
     const isMember = await prismadb.teamMembers.findFirst({
       where: {
         teamId,
@@ -92,20 +94,20 @@ export async function GET(req, { params }) {
 
     const tasks = await prismadb.task.findMany({
       where: {
-        teamId,
+        teamId: {
+          equals: teamId, // ensures teamId exists and matches
+          not: null,      // explicitly exclude tasks with null teamId
+        },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
       include: {
         assignedTasks: {
-          include: {
-            assignedToUser: true,
-          },
+          include: { assignedToUser: true },
         },
         team: true,
       },
     });
+    
 
     return NextResponse.json(tasks);
   } catch (error) {

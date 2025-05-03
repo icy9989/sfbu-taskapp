@@ -11,6 +11,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import MobileSidebar from "@/components/mobile-sidebar";
 import CustomTooltip from "@/components/custom-tooltip";
 
+import EditProfileModal from "@/components/modals/edit-profile-modal";
+import ChangePasswordModal from '@/components/modals/change-password-modal';
+
 import useCurrentUser from "@/hooks/use-current-user";
 
 
@@ -25,7 +28,12 @@ const Navbar = () => {
 
   return (
     <>
-    
+      {currentUser && (
+        <>
+          <EditProfileModal isOpen={openEditProfile} onClose={() => setOpenEditProfile(false)} currentUser={currentUser} />
+          <ChangePasswordModal isOpen={openChangePassword} onClose={() => setOpenChangePassword(false)} />
+        </>
+      )}
       <div className="py-3 px-5 flex flex-row items-center border-b w-full fixed lg:pr-[296px] bg-white z-50">
           <MobileSidebar />
           <h5 className="text-lg font-semibold text-primary flex flex-row items-center gap-2">

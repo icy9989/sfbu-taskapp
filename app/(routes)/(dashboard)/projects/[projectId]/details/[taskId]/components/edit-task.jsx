@@ -8,7 +8,7 @@ import NotFound from "@/components/not-found";
 import useTask from "@/hooks/use-task";
 import TaskForm from "./task-form";
 
-const EditTask = ({ teamId }) => {
+const EditTask = () => {
 
     const params = useParams();
     const { data: fetchedTask, isLoading } = useTask(params.taskId);
@@ -48,7 +48,7 @@ const EditTask = ({ teamId }) => {
     }
 
     return (
-        <TaskForm initialData={task} teamId={teamId} />
+        <TaskForm initialData={task} />
     )
 }
 

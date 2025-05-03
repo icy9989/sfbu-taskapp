@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button"
 
 const formSchema = z.object({
   name: z.string().min(5),
+  username: z.string().min(5),
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(5)
 })
@@ -29,6 +30,7 @@ const SignUpPage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: ""
     },
@@ -49,6 +51,7 @@ const SignUpPage = () => {
             
       await axios.post("/api/register", {
         name: values.name,
+        username: values.username,
         email: values.email,
         password: values.password
       })
@@ -95,6 +98,25 @@ const SignUpPage = () => {
                             <Input 
                                 disabled={loading}
                                 placeholder="name" 
+                                {...field} 
+                                autoComplete="off"
+                                className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent peer" 
+                                style={{ marginTop: 0 }} 
+                            />
+                            </FormControl>
+                        </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                        <FormItem className="flex flex-row items-center px-3 rounded-lg border-2 focus-within:border-primary overflow-hidden">
+                            <FormLabel className="text-muted-foreground bg-slate-200 peer-focus-visible:bg-slate-800 p-1 rounded-md"><User /></FormLabel>
+                            <FormControl className="ml-1">
+                            <Input 
+                                disabled={loading}
+                                placeholder="username" 
                                 {...field} 
                                 autoComplete="off"
                                 className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent peer" 

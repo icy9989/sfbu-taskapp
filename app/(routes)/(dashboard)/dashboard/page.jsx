@@ -80,6 +80,7 @@ const Dashboard = ({ children }) => {
         count={data.value}
         iconBg={cards[index]?.iconBg}
         icon={cards[index]?.icon}
+        suffix={data.title.toLowerCase().includes("completion") ? "%" : undefined}
       />
     ))
   )

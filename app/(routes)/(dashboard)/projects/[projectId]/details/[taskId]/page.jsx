@@ -18,7 +18,7 @@ const TaskPage = ({ params }) => {
                 />
             </div>
             <div className="my-5 pb-10">
-                {params.taskId === "new" ? <AddTask teamId={params.teamId} /> : <EditTask teamId={params.teamId} />}
+                {params.taskId === "new" ? <AddTask /> : <EditTask />}
             </div>
         </div>
     </>

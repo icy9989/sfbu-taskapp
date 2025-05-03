@@ -10,6 +10,7 @@ datasource db {
 model User {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   name           String
+  username       String      @unique
   email          String      @unique
   hashedPassword String
   teams          TeamMembers[]
@@ -50,6 +51,7 @@ model TeamMembers {
 enum TeamRole {
   ADMIN
   MEMBER
+  MANGER
 }
 
 model Task {

@@ -7,12 +7,14 @@ import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import DeleteAlertModal from "@/components/modals/delete-alert-modal"
+
 import useTasks from "@/hooks/use-tasks"
 
-const CardAction = ({ id, teamId }) => {
+const CardAction = ({ id }) => {
 
     const router = useRouter();
     const [ openDeleteAlert, setOpenDeleteAlert ] = useState(false);
+    const [openAddMember, setOpenAddMember] = useState(false)
     const { mutate: mutateTasks} = useTasks();
 
     const onDelete = async () => {
@@ -31,6 +33,7 @@ const CardAction = ({ id, teamId }) => {
   return (
     <>
         <DeleteAlertModal isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)} onDelete={onDelete} />
+        <AddMemberModal isOpen={openAddMember} onClose={() => setOpenAddMember(false)} taskId={id} />
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Button variant="ghost" className="w-8 h-8 p-0">
@@ -41,7 +44,15 @@ const CardAction = ({ id, teamId }) => {
                 <DropdownMenuLabel>
                     Actions
                 </DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => router.push(`/teams/${teamId}/details/${id}`)}>
+                <DropdownMenuItem onClick={() => router.push(`/tasks/${id}`)}>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Add Member
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push(`/tasks/${id}`)}>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Update
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push(`/tasks/${id}`)}>
                     <Edit className="w-4 h-4 mr-2" />
                     Update
                 </DropdownMenuItem>

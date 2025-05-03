@@ -1,8 +1,8 @@
 import TaskForm from "./task-form"
 
-const AddTask= () => {
+const AddTask= ({ teamId }) => {
   return (
-    <TaskForm initialData={null} tasks={[]} />
+    <TaskForm initialData={null} tasks={[]} teamId={teamId} />
   )
 }
 

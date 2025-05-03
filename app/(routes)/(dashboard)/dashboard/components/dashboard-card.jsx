@@ -2,7 +2,7 @@ import { LucideIcon, User } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const DashboardCard = ({ title, count, iconBg, icon }) => {
+const DashboardCard = ({ title, count, iconBg, icon, suffix }) => {
   return (
     <Card>
       <div className="flex justify-between items-center p-5">
@@ -10,7 +10,9 @@ const DashboardCard = ({ title, count, iconBg, icon }) => {
           <CardTitle className="text-sm font-medium mb-2">
             {title}
           </CardTitle>
-          <div className="text-2xl font-bold">{count}</div>
+          <div className="text-2xl font-bold">
+            {count}{suffix && <span className="text-base ml-1">{suffix}</span>}
+          </div>
         </div>
         <div className={`p-2 rounded-full ${iconBg}`}>
           {icon}
@@ -20,4 +22,4 @@ const DashboardCard = ({ title, count, iconBg, icon }) => {
   )
 }
 
-export default DashboardCard
+export default DashboardCard 

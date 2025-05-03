@@ -88,10 +88,10 @@ import serverAuth from "@/lib/server-auth";
  *                 message:
  *                   type: string
  *                   example: "Internal Server Error"
- * 
- *   put:
+ *  * /api/users/{id}:
+ *   patch:
  *     tags: [User API]
- *     description: Updates the user profile, allowing changes to the user's name, email, and password. The current user can only update their own profile.
+ *     description: Partially updates the user profile, allowing changes to the user's name, email, password, and username. The current user can only update their own profile.
  *     parameters:
  *       - name: id
  *         in: path
@@ -116,8 +116,12 @@ import serverAuth from "@/lib/server-auth";
  *                 example: "kmhtwe1999@gmail.com"
  *               password:
  *                 type: string
- *                 description: The new password for the user.
+ *                 description: The new password for the user (optional).
  *                 example: "newPassword123"
+ *               username:
+ *                 type: string
+ *                 description: The new username for the user.
+ *                 example: "newUsername"
  *     responses:
  *       200:
  *         description: Successfully updated the user's profile.
@@ -138,6 +142,88 @@ import serverAuth from "@/lib/server-auth";
  *                   type: string
  *                   description: The updated email address of the user.
  *                   example: "kmhtwe1999@gmail.com"
+ *                 username:
+ *                   type: string
+ *                   description: The updated username of the user.
+ *                   example: "newUsername"
+ *       403:
+ *         description: Forbidden if the current user tries to update another user's profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Forbidden: You can only update your own profile."
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ *
+ *   put:
+ *     tags: [User API]
+ *     description: Updates the user profile, allowing changes to the user's name, email, password, and username. The current user can only update their own profile.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The unique identifier of the user to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The full name of the user.
+ *                 example: "Vicky"
+ *               email:
+ *                 type: string
+ *                 description: The email address of the user.
+ *                 example: "kmhtwe1999@gmail.com"
+ *               password:
+ *                 type: string
+ *                 description: The new password for the user (optional).
+ *                 example: "newPassword123"
+ *               username:
+ *                 type: string
+ *                 description: The new username for the user.
+ *                 example: "newUsername"
+ *     responses:
+ *       200:
+ *         description: Successfully updated the user's profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The unique identifier for the user.
+ *                   example: "67e797df47c9baab43d94182"
+ *                 name:
+ *                   type: string
+ *                   description: The updated full name of the user.
+ *                   example: "Vicky"
+ *                 email:
+ *                   type: string
+ *                   description: The updated email address of the user.
+ *                   example: "kmhtwe1999@gmail.com"
+ *                 username:
+ *                   type: string
+ *                   description: The updated username of the user.
+ *                   example: "newUsername"
  *       403:
  *         description: Forbidden if the current user tries to update another user's profile.
  *         content:
@@ -202,7 +288,6 @@ import serverAuth from "@/lib/server-auth";
  *                   example: "Internal Server Error"
  */
 
-
 // GET /api/users/{id}
 export async function GET(req, { params }) {
     try {
@@ -212,12 +297,6 @@ export async function GET(req, { params }) {
           id: params.id
         },
         include: {
-          // teams: {
-          //   include: {
-          //     team: true, 
-          //     role: true  // Include the role the user has in each team
-          //   }
-          // },
           notifications: true,
           dashboardStats: true
         }
@@ -234,13 +313,55 @@ export async function GET(req, { params }) {
     }
 }
 
+export async function PATCH(req, { params }) {
+  try {
+      const { name, email, password, username } = await req.json();
+      const { currentUser } = await serverAuth();
+
+      // Ensure the current user is updating their own profile
+      if (currentUser.id !== params.id) {
+          return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
+      }
+
+      let updatedUser;
+
+      // If password is provided, hash it
+      if (password) {
+          const hashedPassword = await bcrypt.hash(password, 12);
+          updatedUser = await prismadb.user.update({
+              where: { id: currentUser.id },
+              data: {
+                  name,
+                  email,
+                  username,
+                  hashedPassword
+              }
+          });
+      } else {
+          updatedUser = await prismadb.user.update({
+              where: { id: currentUser.id },
+              data: {
+                  name,
+                  email,
+                  username
+              }
+          });
+      }
+
+      return NextResponse.json(updatedUser);
+  } catch (error) {
+      console.log("[USER_UPDATE]", error);
+      return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
 // PUT /api/users/{id}
 export async function PUT(req, { params }) {
     try {
-      const { name, email, password } = await req.json();
+      const { name, email, password, username } = await req.json();
       const { currentUser } = await serverAuth();
   
-      // Ensure the current user is updating their own profile (optional security measure)
+      // Ensure the current user is updating their own profile
       if (currentUser.id !== params.id) {
         return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
       }
@@ -255,6 +376,7 @@ export async function PUT(req, { params }) {
           data: {
             name,
             email,
+            username,
             hashedPassword
           }
         });
@@ -263,7 +385,8 @@ export async function PUT(req, { params }) {
           where: { id: currentUser.id },
           data: {
             name,
-            email
+            email,
+            username
           }
         });
       }

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { LayoutDashboard, MessageSquare, Users, Box, ImageIcon, Utensils, ClipboardList, ShoppingBag, VideoIcon, Music, Code, CircleDollarSign, Settings } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Users, ListChecks, Box, ImageIcon, Utensils, ClipboardList, ShoppingBag, VideoIcon, Music, Code, CircleDollarSign, Settings } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
@@ -16,39 +16,39 @@ const routes = [
     {
         href: '/tasks',
         label: 'Tasks',
-        icon: Users,
+        icon: ListChecks,
         // color: "text-violet-500"
     },
     {
         href: '/teams',
         label: 'Teams',
-        icon: Box,
+        icon: Users,
         // color: "text-pink-700"
     },
-    {
-        href: '/projects',
-        label: 'Projects',
-        icon: Utensils,
-        // color: "text-fuchsia-500"
-    },
-    {
-        href: '/orders',
-        label: 'Orders',
-        icon: ShoppingBag,
-        // color: "text-orange-700"
-    },
-    {
-        href: '/income',
-        label: 'Income',
-        icon: Music,
-        // color: "text-emerald-500"
-    },
-    {
-        href: '/expense',
-        label: 'Expense',
-        icon: CircleDollarSign,
-        // color: "text-yellow-500"
-    },
+    // {
+    //     href: '/projects',
+    //     label: 'Projects',
+    //     icon: Utensils,
+    //     // color: "text-fuchsia-500"
+    // },
+    // {
+    //     href: '/orders',
+    //     label: 'Orders',
+    //     icon: ShoppingBag,
+    //     // color: "text-orange-700"
+    // },
+    // {
+    //     href: '/income',
+    //     label: 'Income',
+    //     icon: Music,
+    //     // color: "text-emerald-500"
+    // },
+    // {
+    //     href: '/expense',
+    //     label: 'Expense',
+    //     icon: CircleDollarSign,
+    //     // color: "text-yellow-500"
+    // },
     // {
     //   label: 'Settings',
     //   icon: Settings,

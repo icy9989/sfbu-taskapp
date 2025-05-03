@@ -32,7 +32,7 @@ const formSchema = z.object({
   status: z.string().min(1, "Status is required"),
 })
 
-const TaskForm = ({ initialData = null, teamId }) => {
+const TaskForm = ({ initialData = null }) => {
   const [loading, setLoading] = useState(false)
   const { mutate: mutateTasks } = useTasks();
   const router = useRouter()
@@ -63,7 +63,7 @@ const TaskForm = ({ initialData = null, teamId }) => {
         toast.success("Task created successfully.")
         mutateTasks()
       }
-      router.push(`/teams/${teamId}/details`);
+      router.push("/tasks");
     } catch (error) {
       toast.error("Something went wrong.")
     } finally {
