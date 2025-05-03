@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getApiDocs } from "@/lib/swagger";
 import ReactSwagger from "./react-swagger";
 
