@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-
 import prismadb from '@/lib/prismadb';
 import serverAuth from "@/lib/server-auth";
 
@@ -27,25 +26,24 @@ import serverAuth from "@/lib/server-auth";
  *               properties:
  *                 id:
  *                   type: string
- *                   description: The unique identifier for the user.
  *                   example: "67e797df47c9baab43d94182"
  *                 name:
  *                   type: string
- *                   description: The full name of the user.
  *                   example: "Vicky"
  *                 email:
  *                   type: string
- *                   description: The email address of the user.
  *                   example: "kmhtwe1999@gmail.com"
+ *                 username:
+ *                   type: string
+ *                   example: "vicky123"
  *                 notifications:
  *                   type: array
- *                   description: List of notifications related to the user.
  *                   items:
  *                     type: object
  *                     properties:
  *                       id:
  *                         type: string
- *                         example: "bcbcdc6d-798d-4f9d-bb5c-2f5cd687028d"
+ *                         example: "notif-123"
  *                       content:
  *                         type: string
  *                         example: "You have a new message."
@@ -69,34 +67,17 @@ import serverAuth from "@/lib/server-auth";
  *                       type: integer
  *                       example: 3
  *       404:
- *         description: The user with the specified ID was not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "User not found"
+ *         description: User not found.
  *       500:
  *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Internal Server Error"
- *  * /api/users/{id}:
+ *
  *   patch:
  *     tags: [User API]
- *     description: Partially updates the user profile, allowing changes to the user's name, email, password, and username. The current user can only update their own profile.
+ *     description: Partially updates a user's profile.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: The unique identifier of the user to update.
  *         schema:
  *           type: string
  *     requestBody:
@@ -108,23 +89,15 @@ import serverAuth from "@/lib/server-auth";
  *             properties:
  *               name:
  *                 type: string
- *                 description: The full name of the user.
- *                 example: "Vicky"
  *               email:
  *                 type: string
- *                 description: The email address of the user.
- *                 example: "kmhtwe1999@gmail.com"
- *               password:
- *                 type: string
- *                 description: The new password for the user (optional).
- *                 example: "newPassword123"
  *               username:
  *                 type: string
- *                 description: The new username for the user.
- *                 example: "newUsername"
+ *               password:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Successfully updated the user's profile.
+ *         description: Successfully updated.
  *         content:
  *           application/json:
  *             schema:
@@ -132,49 +105,24 @@ import serverAuth from "@/lib/server-auth";
  *               properties:
  *                 id:
  *                   type: string
- *                   description: The unique identifier for the user.
- *                   example: "67e797df47c9baab43d94182"
  *                 name:
  *                   type: string
- *                   description: The updated full name of the user.
- *                   example: "Vicky"
  *                 email:
  *                   type: string
- *                   description: The updated email address of the user.
- *                   example: "kmhtwe1999@gmail.com"
  *                 username:
  *                   type: string
- *                   description: The updated username of the user.
- *                   example: "newUsername"
  *       403:
- *         description: Forbidden if the current user tries to update another user's profile.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Forbidden: You can only update your own profile."
+ *         description: Forbidden.
  *       500:
  *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Internal Server Error"
  *
  *   put:
  *     tags: [User API]
- *     description: Updates the user profile, allowing changes to the user's name, email, password, and username. The current user can only update their own profile.
+ *     description: Fully updates a user's profile.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: The unique identifier of the user to update.
  *         schema:
  *           type: string
  *     requestBody:
@@ -186,23 +134,15 @@ import serverAuth from "@/lib/server-auth";
  *             properties:
  *               name:
  *                 type: string
- *                 description: The full name of the user.
- *                 example: "Vicky"
  *               email:
  *                 type: string
- *                 description: The email address of the user.
- *                 example: "kmhtwe1999@gmail.com"
- *               password:
- *                 type: string
- *                 description: The new password for the user (optional).
- *                 example: "newPassword123"
  *               username:
  *                 type: string
- *                 description: The new username for the user.
- *                 example: "newUsername"
+ *               password:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Successfully updated the user's profile.
+ *         description: Successfully updated.
  *         content:
  *           application/json:
  *             schema:
@@ -210,54 +150,29 @@ import serverAuth from "@/lib/server-auth";
  *               properties:
  *                 id:
  *                   type: string
- *                   description: The unique identifier for the user.
- *                   example: "67e797df47c9baab43d94182"
  *                 name:
  *                   type: string
- *                   description: The updated full name of the user.
- *                   example: "Vicky"
  *                 email:
  *                   type: string
- *                   description: The updated email address of the user.
- *                   example: "kmhtwe1999@gmail.com"
  *                 username:
  *                   type: string
- *                   description: The updated username of the user.
- *                   example: "newUsername"
  *       403:
- *         description: Forbidden if the current user tries to update another user's profile.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Forbidden: You can only update your own profile."
+ *         description: Forbidden.
  *       500:
  *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Internal Server Error"
- * 
+ *
  *   delete:
  *     tags: [User API]
- *     description: Deletes the user account. The user can only delete their own account unless they are an admin.
+ *     description: Deletes a user profile.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: The unique identifier of the user to delete.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Successfully deleted the user account.
+ *         description: Successfully deleted.
  *         content:
  *           application/json:
  *             schema:
@@ -267,165 +182,119 @@ import serverAuth from "@/lib/server-auth";
  *                   type: string
  *                   example: "User deleted successfully"
  *       403:
- *         description: Forbidden if the current user is not authorized to delete the user (either their own account or as an admin).
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Forbidden: You can only delete your own account or an admin account."
+ *         description: Forbidden.
  *       500:
  *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Internal Server Error"
  */
 
 // GET /api/users/{id}
 export async function GET(req, { params }) {
-    try {
-      // Fetch the user by their unique ID, including related data like teams, notifications, and dashboard stats
-      const user = await prismadb.user.findUnique({
-        where: {
-          id: params.id
-        },
-        include: {
-          notifications: true,
-          dashboardStats: true
-        }
-      });
-  
-      if (!user) {
-        return new NextResponse("User not found", { status: 404 });
-      }
-  
-      return NextResponse.json(user);
-    } catch (error) {
-      console.log("[USER_GET_BY_ID]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+  try {
+    const user = await prismadb.user.findUnique({
+      where: { id: params.id },
+      include: {
+        notifications: true,
+        dashboardStats: true,
+      },
+    });
+
+    if (!user) {
+      return new NextResponse("User not found", { status: 404 });
     }
+
+    return NextResponse.json(user);
+  } catch (error) {
+    console.error("[USER_GET_BY_ID]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }
 
+// PATCH /api/users/{id}
 export async function PATCH(req, { params }) {
   try {
-      const { name, email, password, username } = await req.json();
-      const { currentUser } = await serverAuth();
+    const { name, email, password, username } = await req.json();
+    const { currentUser } = await serverAuth();
 
-      // Ensure the current user is updating their own profile
-      if (currentUser.id !== params.id) {
-          return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
-      }
+    if (currentUser.id !== params.id) {
+      return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
+    }
 
-      let updatedUser;
+    const updateData = {
+      name,
+      email,
+      username,
+    };
 
-      // If password is provided, hash it
-      if (password) {
-          const hashedPassword = await bcrypt.hash(password, 12);
-          updatedUser = await prismadb.user.update({
-              where: { id: currentUser.id },
-              data: {
-                  name,
-                  email,
-                  username,
-                  hashedPassword
-              }
-          });
-      } else {
-          updatedUser = await prismadb.user.update({
-              where: { id: currentUser.id },
-              data: {
-                  name,
-                  email,
-                  username
-              }
-          });
-      }
+    if (password) {
+      updateData.hashedPassword = await bcrypt.hash(password, 12);
+    }
 
-      return NextResponse.json(updatedUser);
+    const updatedUser = await prismadb.user.update({
+      where: { id: currentUser.id },
+      data: updateData,
+    });
+
+    return NextResponse.json(updatedUser);
   } catch (error) {
-      console.log("[USER_UPDATE]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+    console.error("[USER_PATCH]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
 // PUT /api/users/{id}
 export async function PUT(req, { params }) {
-    try {
-      const { name, email, password, username } = await req.json();
-      const { currentUser } = await serverAuth();
-  
-      // Ensure the current user is updating their own profile
-      if (currentUser.id !== params.id) {
-        return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
-      }
-  
-      let updatedUser;
-  
-      // If password is provided, hash it
-      if (password) {
-        const hashedPassword = await bcrypt.hash(password, 12);
-        updatedUser = await prismadb.user.update({
-          where: { id: currentUser.id },
-          data: {
-            name,
-            email,
-            username,
-            hashedPassword
-          }
-        });
-      } else {
-        updatedUser = await prismadb.user.update({
-          where: { id: currentUser.id },
-          data: {
-            name,
-            email,
-            username
-          }
-        });
-      }
-  
-      return NextResponse.json(updatedUser);
-    } catch (error) {
-      console.log("[USER_UPDATE]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+  try {
+    const { name, email, password, username } = await req.json();
+    const { currentUser } = await serverAuth();
+
+    if (currentUser.id !== params.id) {
+      return new NextResponse("Forbidden: You can only update your own profile.", { status: 403 });
     }
+
+    const updateData = {
+      name,
+      email,
+      username,
+    };
+
+    if (password) {
+      updateData.hashedPassword = await bcrypt.hash(password, 12);
+    }
+
+    const updatedUser = await prismadb.user.update({
+      where: { id: currentUser.id },
+      data: updateData,
+    });
+
+    return NextResponse.json(updatedUser);
+  } catch (error) {
+    console.error("[USER_PUT]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }
 
 // DELETE /api/users/{id}
 export async function DELETE(req, { params }) {
-    try {
-      const { currentUser } = await serverAuth();
-  
-      // Ensure the current user is authorized to delete the user (either the user themselves or an admin)
-      const userInTeams = await prismadb.teamMembers.findMany({
-        where: {
-          userId: params.id
-        }
-      });
-      
-      const isAdmin = userInTeams.some(teamMember => teamMember.role === 'ADMIN');
-      
-      if (currentUser.id !== params.id && !isAdmin) {
-        return new NextResponse("Forbidden: You can only delete your own account or an admin account.", { status: 403 });
-      }
-  
-      // Delete the user from the database
-      await prismadb.user.delete({
-        where: {
-          id: params.id
-        }
-      });
-  
-      return new NextResponse("User deleted successfully", { status: 200 });
-    } catch (error) {
-      console.log("[USER_DELETE]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+  try {
+    const { currentUser } = await serverAuth();
+
+    const userInTeams = await prismadb.teamMembers.findMany({
+      where: { userId: params.id },
+    });
+
+    const isAdmin = userInTeams.some((member) => member.role === "ADMIN");
+
+    if (currentUser.id !== params.id && !isAdmin) {
+      return new NextResponse("Forbidden: You can only delete your own account or as an admin.", { status: 403 });
     }
+
+    await prismadb.user.delete({
+      where: { id: params.id },
+    });
+
+    return NextResponse.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("[USER_DELETE]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }

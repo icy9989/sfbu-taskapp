@@ -7,7 +7,8 @@ import serverAuth from "@/lib/server-auth";
  * /api/teams/{id}/members:
  *   post:
  *     tags: [Teams]
- *     description: Adds a member to a team by username. Only the admin of the team can add members.
+ *     summary: Adds a member to a team by username
+ *     description: Only the admin of the team can add members.
  *     parameters:
  *       - in: path
  *         name: id
@@ -15,65 +16,47 @@ import serverAuth from "@/lib/server-auth";
  *         description: The unique identifier of the team.
  *         schema:
  *           type: string
- *           example: "abc123"
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - username
+ *               - role
  *             properties:
  *               username:
  *                 type: string
- *                 description: The username of the user to be added to the team.
  *                 example: "johndoe"
  *               role:
  *                 type: string
- *                 description: The role of the user in the team (e.g., "MEMBER", "ADMIN").
  *                 example: "MEMBER"
  *     responses:
  *       200:
- *         description: Successfully added the user as a member of the team.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   description: The unique identifier of the team member.
- *                 teamId:
- *                   type: string
- *                   description: The team ID.
- *                 userId:
- *                   type: string
- *                   description: The user ID.
- *                 role:
- *                   type: string
- *                   description: The user's role in the team.
+ *         description: Successfully added the user.
  *       401:
- *         description: Unauthorized - user is not authenticated.
+ *         description: Unauthorized
  *       403:
- *         description: Forbidden - only the admin can add members.
+ *         description: Forbidden
  *       404:
- *         description: User or team not found.
+ *         description: User or team not found
  *       500:
- *         description: Internal server error.
- *  * /api/teams/{id}/members:
+ *         description: Internal server error
  *   get:
  *     tags: [Teams]
- *     description: Fetches all members of a team along with their roles. Only the admin can view team members.
+ *     summary: Fetch all members of a team
+ *     description: Only the admin can view team members.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: The unique identifier of the team.
+ *         description: The team ID.
  *         schema:
  *           type: string
- *           example: "abc123"
  *     responses:
  *       200:
- *         description: Successfully fetched team members with their roles.
+ *         description: Members fetched
  *         content:
  *           application/json:
  *             schema:
@@ -91,16 +74,14 @@ import serverAuth from "@/lib/server-auth";
  *                     type: string
  *                   role:
  *                     type: string
- *                   position:
- *                     type: string
  *       401:
- *         description: Unauthorized - user is not authenticated.
+ *         description: Unauthorized
  *       403:
- *         description: Forbidden - only the admin can view members.
+ *         description: Forbidden
  *       404:
- *         description: Team not found.
+ *         description: Team not found
  *       500:
- *         description: Internal server error.
+ *         description: Internal server error
  */
 
 

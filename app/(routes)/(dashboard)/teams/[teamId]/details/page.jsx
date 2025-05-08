@@ -14,6 +14,8 @@ const DetailPage = () => {
   const { data: fetchedTeam, isLoading } = useTeam(params.teamId);
   const { data: teamMembers, isLoading: MemberLoading } = useTeamMembers(params.teamId);
 
+  console.log("fetchedTeam", fetchedTeam)
+
   if (isLoading && MemberLoading) {
     return (
       <div className="flex justify-center items-center h-40">
