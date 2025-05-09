@@ -1,13 +1,14 @@
-// app/(dashboard)/teams/[id]/page.tsx
-
-import { useTeamMembers } from "@/hooks/useTeamMembers";
-import { useTeam } from "@/hooks/useTeam";
+import useTeamMembers from "@/hooks/use-team-members";
+import useTeam from "@/hooks/use-team";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Tasks from "./_components/tasks";
+import Tasks from "./components/tasks";
 
 export default function TeamDetailsPage({ params }) {
-  const { team } = useTeam(params.id);
-  const { teamMembers } = useTeamMembers(params.id);
+
+  const teamId = params.teamId
+  console.log("paramsidsss", teamId)
+  const { data: team } = useTeam(teamId);
+  const { data: teamMembers } = useTeamMembers(teamId);
 
   if (!team) {
     return <div className="text-center mt-10 text-muted-foreground">Loading team details...</div>;
@@ -61,7 +62,7 @@ export default function TeamDetailsPage({ params }) {
       {/* Team Tasks Section */}
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Tasks</h2>
-        <Tasks teamId={params.id} />
+        <Tasks teamId={teamId} />
       </div>
     </div>
   );

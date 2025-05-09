@@ -40,7 +40,7 @@ const Navbar = () => {
             <PartyPopper />Hello, {currentUser?.name}
           </h5>
           <div className="ml-auto flex flex-row items-center gap-2">
-              <p className="hidden sm:flex text-sm text-muted-foreground">{currentUser?.name.split(" ")[0]}</p>
+              <p className="hidden sm:flex text-sm text-muted-foreground">{currentUser?.username}</p>
               <CustomTooltip
                 text="view profile"
               >

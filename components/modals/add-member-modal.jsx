@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useTeamMembers from '@/hooks/use-team-members';
 
 const AddMemberModal = ({ isOpen, onClose, teamId }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
+  const { mutate: mutateTeamMembers } = useTeamMembers(teamId);
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,7 +32,8 @@ const AddMemberModal = ({ isOpen, onClose, teamId }) => {
         username,
         role,
       });
-
+      mutateTeamMembers();
+      
       toast.success("Member added.");
       onClose();
     } catch (error) {

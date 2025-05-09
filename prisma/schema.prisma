@@ -51,7 +51,7 @@ model TeamMembers {
 enum TeamRole {
   ADMIN
   MEMBER
-  MANGER
+  MANAGER
 }
 
 model Task {
