@@ -4,8 +4,6 @@ import { ClipLoader } from "react-spinners";
 
 import NoResult from "@/components/no-result";
 
-import useTasks from "@/hooks/use-tasks";  // Custom hook for fetching tasks
-
 import TaskCard from "./task-card";  // Card component for tasks
 import useTeamTasks from "@/hooks/use-team-tasks";
 import { useParams } from "next/navigation";
