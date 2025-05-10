@@ -83,6 +83,39 @@ import serverAuth from "@/lib/server-auth";
  *                 error:
  *                   type: string
  *                   example: "Internal Server Error"
+ *
+
+ *   get:
+ *     tags: [Tasks]
+ *     summary: Get all assigned members of a task
+ *     description: Returns a list of users assigned to a specific task.
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the task
+ *     responses:
+ *       200:
+ *         description: A list of assigned members
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *       401:
+ *         description: Unauthenticated
+ *       500:
+ *         description: Internal server error
  */
 
 // Create an assignment for a task
@@ -137,3 +170,6 @@ export async function POST(req) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
+
+
+
