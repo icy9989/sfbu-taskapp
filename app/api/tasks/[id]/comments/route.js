@@ -84,7 +84,7 @@ export async function GET(req, { params }) {
             orderBy: { timestamp: "asc" }, // Order by timestamp to get comments in chronological order
             include: {
                 user: {
-                    select: { id: true, name: true }, // Select relevant user fields
+                    select: { id: true, name: true, username: true }, // Select relevant user fields
                 },
             },
         });
