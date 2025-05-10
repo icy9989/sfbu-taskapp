@@ -8,18 +8,21 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import DeleteAlertModal from "@/components/modals/delete-alert-modal"
 import useTasks from "@/hooks/use-tasks"
+import useTeamTasks from "@/hooks/use-team-tasks"
 
 const CardAction = ({ id, teamId }) => {
 
     const router = useRouter();
     const [ openDeleteAlert, setOpenDeleteAlert ] = useState(false);
     const { mutate: mutateTasks} = useTasks();
+    const { mutate: mutateTeamTasks } = useTeamTasks(teamId);
 
     const onDelete = async () => {
         try {
             await axios.delete(`/api/tasks/${id}`);
             toast.success("Task is successfully deleted.");
             mutateTasks();
+            mutateTeamTasks();
         } catch(error) {
             console.log(error);
             toast.error("Something went wrong.");
